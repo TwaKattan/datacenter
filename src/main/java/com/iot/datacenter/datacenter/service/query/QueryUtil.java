@@ -17,7 +17,9 @@ public class QueryUtil {
         } else {
             selectPortion = "select * from device_result";
         }
-        selectPortion += String.format(" order by %s %s", paginationRequest.getColumnName(), paginationRequest.getOrder());
+        if (!isCount) {
+            selectPortion += String.format(" order by %s %s", paginationRequest.getColumnName(), paginationRequest.getOrder());
+        }
         return selectPortion;
     }
 
