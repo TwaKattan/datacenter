@@ -23,7 +23,7 @@ public class DataResultController {
     private DeviceResultService deviceResultService;
 
     /**
-     * This method help us to save the sensro data into database
+     * This method help us to save the sensro data into database this called the creation process
      * Endpoint :- http://localhost:8080/dataResult.json/createDeviceResult
      * Request Payload :- {"deviceId":"1589-97827-878278-454545","temperature":"1548","humidity":"1545"}
      * */
@@ -40,6 +40,11 @@ public class DataResultController {
         }
     }
 
+    /**
+     * This method help us to fetch the date from the database and show on the ui grid this process call fetch process
+     * Endpoint :- http://localhost:8080/dataResult.json/getAllDeviceResultInPagination
+     * Endpoint :- http://localhost:8080/dataResult.json/getAllDeviceResultInPagination
+     * */
     @RequestMapping(value = "/getAllDeviceResultInPagination", method = RequestMethod.POST)
     public ResponseDto getAllDeviceResultInPagination(@RequestBody PaginationRequestDto paginationRequest) {
         ResponseDto response;

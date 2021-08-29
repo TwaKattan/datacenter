@@ -8,6 +8,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @Table(name = "DeviceResult")
@@ -83,5 +84,15 @@ public class DeviceResult {
     public String toString() {
         return new Gson().toJson(this);
     }
+
+    /**
+     *     public static void main (String args[]) {
+     *         DeviceResult deviceResult = new DeviceResult();
+     *         deviceResult.setDeviceId(UUID.randomUUID().toString());
+     *         deviceResult.setTemperature("12.f");
+     *         deviceResult.setHumidity("12.h");
+     *         System.out.println(deviceResult);
+     *     }
+     * */
 
 }
