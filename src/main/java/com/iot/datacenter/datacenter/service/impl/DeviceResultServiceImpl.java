@@ -2,6 +2,7 @@ package com.iot.datacenter.datacenter.service.impl;
 
 import com.iot.datacenter.datacenter.dto.PaginationRequestDto;
 import com.iot.datacenter.datacenter.dto.ResponseDto;
+import com.iot.datacenter.datacenter.exception.ExceptionUtil;
 import com.iot.datacenter.datacenter.model.DeviceResult;
 import com.iot.datacenter.datacenter.repository.DataResultRepository;
 import com.iot.datacenter.datacenter.service.DeviceResultService;
@@ -12,6 +13,7 @@ import com.iot.datacenter.datacenter.util.DataCenterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,11 +32,19 @@ public class DeviceResultServiceImpl implements DeviceResultService {
     private QueryUtil queryUtil;
 
     @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
     private DataResultRepository dataResultRepository;
 
     public DeviceResult createDeviceResult(DeviceResult deviceResult) {
         logger.info("createDeviceResult :- " + deviceResult );
-        return this.dataResultRepository.save(deviceResult);
+        deviceResult = this.dataResultRepository.save(deviceResult);
+        try {
+            this.simpMessagingTemplate.convertAndSend("/topic/temperature",deviceResult);
+        } catch (Exception ex) {
+            logger.error("An error occurred while createDeviceResult file", ExceptionUtil.getRootCauseMessage(ex));
+        }
+        return deviceResult;
     }
 
     @Override
